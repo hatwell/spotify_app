@@ -20,10 +20,17 @@ var artistRequestComplete = function(){
   var artistUrl = "https://api.spotify.com/v1/artists/"
   var searchUrl = artistUrl + artistId;
 
+  //this bit makes the country list populate
+  var availableMarkets
+  var countryList = document.querySelector("#test");
+
 
   makeRequest(searchUrl, idRequestComplete);
   return myObject;
 }
+
+
+
 
 var idRequestComplete = function(){
   console.log("request complete");

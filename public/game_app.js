@@ -1,3 +1,7 @@
+
+var id;
+var artistsNames;
+
 var artists = [
   "Nick Cave and the Bad Seeds",
   "Drake",
@@ -47,11 +51,13 @@ var makeRequest = function(url, callback){
 var getId = function(name){
   var name = name.replace(" ", "+")
   var urlToSearch = "https://api.spotify.com/v1/search?query=" + name + "&type=artist";
+  console.log("url to search is", urlToSearch);
   makeRequest(urlToSearch, function(){
     if (this.status !== 200) return;
     var jsonString = this.responseText;
     var myObject = JSON.parse(jsonString);
       id = myObject["artists"]["items"][0]["id"];
+      console.log(id);
       return id;
   })
 }
@@ -67,48 +73,36 @@ var getRelatedArtists = function(id){
     var artistsArray = myObject["artists"];
     artistsNames = [];
     for (artist of artistsArray){
-      console.log(artistsNames);
       artistsNames.push(artist.name);
     }
     console.log("related artists names", artistsNames);
   })
+}
 
+
+var populateArtists = function() {
+  console.log("the play button has been clicked");
   var div = document.getElementById("related-artists");
   div.innerText = ""
   for (name of artistsNames){
     var p = document.createElement("p")
+    p.classList.add("artist");
     p.innerText = name;
     div.appendChild(p);
   }
-
 }
-
-var playButtonRequestComplete = function(){
-  if (this.status !== 200) return;
-  var jsonString = this.responseText;
-  var myObject = JSON.parse(jsonString);
-}
-
-// var populateArtists = function() {
-//   var div = document.getElementById("related-artists");
-//   div.innerText = ""
-//   for (name of artistsNames){
-//     var p = document.createElement("p")
-//     p.innerText = name;
-//     div.appendChild(p);
-//   }
-// }
 
 //this looks after the play button click and setting up the options.
 
 var playButtonClickHandler = function(){
+  console.log("the play button has been clicked")
   artists = shuffle(artists);
   artistToGuess = shuffle(artists)[0];
   console.log("the artist you need to guess", artistToGuess)
   getId(artistToGuess);
-  console.log(id);
+  console.log("the id is", id);
   getRelatedArtists(id);
-  // populateArtists();
+  populateArtists();
 }
 
 var guessButtonClickHandler = function(){
@@ -124,7 +118,6 @@ var guessButtonClickHandler = function(){
 }
 
 
-
 var requestComplete = function(){
   console.log("your request is complete");
 }
@@ -133,7 +126,6 @@ var app = function(){
   var playButton = document.getElementById("play-game");
   playButton.addEventListener('click', playButtonClickHandler);
   var guessButton = document.querySelector("#guess-button");
-  console.log(guessButton);
   guessButton.addEventListener('click', guessButtonClickHandler);
 
 }
