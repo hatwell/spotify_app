@@ -67,10 +67,20 @@ var getRelatedArtists = function(id){
     var artistsArray = myObject["artists"];
     artistsNames = [];
     for (artist of artistsArray){
+      console.log(artistsNames);
       artistsNames.push(artist.name);
     }
     console.log("related artists names", artistsNames);
   })
+
+  var div = document.getElementById("related-artists");
+  div.innerText = ""
+  for (name of artistsNames){
+    var p = document.createElement("p")
+    p.innerText = name;
+    div.appendChild(p);
+  }
+
 }
 
 var playButtonRequestComplete = function(){
@@ -79,15 +89,15 @@ var playButtonRequestComplete = function(){
   var myObject = JSON.parse(jsonString);
 }
 
-var populateArtists = function() {
-  var div = document.getElementById("related-artists");
-  div.innerText = ""
-  for (name of artistsNames){
-    var p = document.createElement("p")
-    p.innerText = name;
-    div.appendChild(p);
-  }
-}
+// var populateArtists = function() {
+//   var div = document.getElementById("related-artists");
+//   div.innerText = ""
+//   for (name of artistsNames){
+//     var p = document.createElement("p")
+//     p.innerText = name;
+//     div.appendChild(p);
+//   }
+// }
 
 //this looks after the play button click and setting up the options.
 
@@ -98,7 +108,7 @@ var playButtonClickHandler = function(){
   getId(artistToGuess);
   console.log(id);
   getRelatedArtists(id);
-  populateArtists();
+  // populateArtists();
 }
 
 var guessButtonClickHandler = function(){
